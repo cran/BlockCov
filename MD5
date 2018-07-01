@@ -1,0 +1,14 @@
+442e7d2fa93d8f0b86e8f9e734cd2e69 *DESCRIPTION
+9d150fe68dc15de03f71260d4f1add1d *NAMESPACE
+abb720a7f4dd1e665b097454c918e83c *R/Sigma_estimation.R
+abc92d714a39ab78f3110b32408921f6 *R/Simu_Sigma.R
+4f3e9d3a1658c01fe0345eab25265d12 *R/slope_change.R
+b84e0eecbf4fcc133c9848ce738d7044 *build/vignette.rds
+137785fc7c6694db75ac025b814182b6 *inst/doc/Vignettes.R
+0ec1824ee554acd3dbfd88a65bf9df64 *inst/doc/Vignettes.Rmd
+49cf15512a4accb9126c7c1c9328b34e *inst/doc/Vignettes.pdf
+bad6e5dc05879e30661ed92932b473df *man/Sigma_estimation.Rd
+c2381c37d64b28ab93282b4d23739462 *man/Simu_Sigma.Rd
+765937755ebeff0a43eedb0561b123a6 *man/slope_change.Rd
+0ec1824ee554acd3dbfd88a65bf9df64 *vignettes/Vignettes.Rmd
+380f424687efbbbece1a435cc0c043da *vignettes/Vignettes.html
