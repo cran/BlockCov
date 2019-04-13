@@ -23,13 +23,10 @@ Matrix::image(Sigma)
 E <- matrix(rnorm(n * q), ncol = q) \%*\% chol(as.matrix(Sigma))
 corE <- cor(as.matrix(E))
 vec_up_emp <- corE[upper.tri(corE)]
-Pti_sig <- matrix(0, ncol = (q - 1), nrow = (q - 1))
-Pti_sig[upper.tri(Pti_sig, diag=TRUE)] <- vec_up_emp
-Pti_sig[lower.tri(Pti_sig)] <- t(as.matrix(Pti_sig))[lower.tri(t(as.matrix(Pti_sig)))]
-res_svd <- svd(Pti_sig)
-vp      <- res_svd$d
+G <- matrix(0, ncol = (q - 1), nrow = (q - 1))
+G[upper.tri(G, diag = TRUE)] <- vec_up_emp
+G[lower.tri(G)] <- t(as.matrix(G))[lower.tri(t(as.matrix(G)))]
+res_svd <- svd(G)
+vp <- res_svd$d
 slope_change(vp)
-}
-\references{
-M. Perrot-Dockès and C. Lévy-Leduc. "Estimation of large block covariance matrices: Application to the analysis of gene expression data", arXiv:1806.10093.
 }

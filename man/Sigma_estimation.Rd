@@ -4,31 +4,36 @@
 \alias{Sigma_estimation}
 \title{This function computes an estimator of the covariance matrix and the square root of its inverse and permutes its rows and columns if it is necessary to make the block structure appear.}
 \usage{
-Sigma_estimation(E, k = NULL, kmax = min(100, (q - 1)), nb_nn0 = NULL,
-  seq.nb = NULL, step = 1, prop.max = 0.7, big = FALSE,
-  reorder = FALSE, inv_12 = TRUE)
+Sigma_estimation(E, k = NULL, nb_nn0 = NULL, big = FALSE,
+  reorder = FALSE, inv_12 = FALSE, method_k = "Cattell",
+  times = 10, method_0 = "Elbow", N = 10)
 }
 \arguments{
 \item{E}{the observation matrix such that each of its row has a block structure correlation matrix Sigma to estimate up to a permutation of its columns and rows.}
 
 \item{k}{numerical or NULL, the rank for the low rank approximation. If NULL the rank is computed using the slope_change function applied on the eigenvalues of the low rank part of Sigma. Default to NULL.}
 
-\item{kmax}{numerical, only used if k is NULL. Its corresponds to the maximum value for the rank in the low rank approximation. Default to min(100, (q-1)), where q is the number of columns of E.}
-
 \item{nb_nn0}{numerical or NULL, corresponds to the number of non null values to keep in the estimation of the covariance matrix.
 If NULL the number of non null values is computed using the slope_change function to the Frobenius norm of the difference between the empirical correlation matrix and its estimation with nb_nn0 non null values. Default to NULL.}
-
-\item{seq.nb}{vector of numerical values or NULL. If NULL the sequence is uniform between q and prop.max*(number of values of the matrix) and the difference between two consecutive values is \code{step}.}
-
-\item{step}{numerical. Default to 1. The differences between 2 consecutive numbers of non null values tested. Is not used if seq.nb is not NULL.}
-
-\item{prop.max}{numerical, default to 0.7. As described in seq.nb it is the maximum proportion of non null values tested if seq.nb is NULL.}
 
 \item{big}{logical, default to FALSE. If the dataset is too big the empirical correlation is calculated by crossprod(E) * 1 / n to fasten the computation}
 
 \item{reorder}{logical, default to FALSE. Whether or not the columns of E are permuted. If TRUE a hierarchical clustering is first performed and the columns are permuted according to it.}
 
-\item{inv_12}{logical, default to TRUE. Whether or not computing the square root of the inverse of the covariance matrix.}
+\item{inv_12}{logical, default to FALSE Whether or not computing the square root of the inverse of the covariance matrix.}
+
+\item{method_k}{character if "Cattell" (the default) then the Cattell criterion \insertCite{cattell1966}{BlockCov} is performed on the singular values of the covariance matrix.
+to estimate the number of rank use in the low rank approximation, while "PA" use the parrallel analysis \insertCite{Horn1965}{BlockCov}
+wich can be more accurate if the number of rows of E is not to small but which is much slower.}
+
+\item{times}{numeric the number of resampling done for the "PA" method, ignored if metod_k is different from "PA".}
+
+\item{method_0}{character if "Elbow" (the default) then the Elbow criterion (see \insertCite{blc;textual}{BlockCov} for details) is performed
+to estimate the number of rank use in the low rank approximation, while "BL" use the approach proposed in
+\insertCite{bickel2008;textual}{BlockCov} based on cross-validation
+ wich can be more accurate if the number of rows of E is not to small but which is much slower.}
+
+\item{N}{numeric the number of fold used for the "BL" method. Ignored if method_0 is different from "BL"}
 }
 \value{
 A list with the elements
@@ -47,10 +52,10 @@ q <- 100
 Sigma <- Simu_Sigma(q = q, diag = FALSE, equal = TRUE)
 Matrix::image(Sigma)
 E <- matrix(rnorm(n * q), ncol = q) \%*\% chol(as.matrix(Sigma))
-res <- Sigma_estimation(E, prop.max = 0.6, step =500)
+res <- Sigma_estimation(E, inv_12 = TRUE)
 Matrix::image(res$Sigma_est)
 Matrix::image(res$S_inv_12)
 }
 \references{
-M. Perrot-Dockès and C. Lévy-Leduc. "Estimation of large block covariance matrices: Application to the analysis of gene expression data", arXiv:1806.10093.
+\insertAllCited{}
 }

@@ -3,6 +3,9 @@ knitr::opts_chunk$set(echo = TRUE, message=FALSE)
 library(BlockCov)
 set.seed(516)
 
+## ---- , eval =FALSE------------------------------------------------------
+#  devtools::install_github("Marie-PerrotDockes/BlockCov")
+
 ## ------------------------------------------------------------------------
 q <- 100
 Sigma <- Simu_Sigma(q = q, diag = FALSE, equal = TRUE)
@@ -25,14 +28,23 @@ Matrix::image(res_known$Sigma_est)
 ## ----fig2, fig.cap="\\label{fig:fig2}",fig.width=3.5,fig.height=3.5------
 Matrix::image(Matrix::Matrix(cor(E)))
 
+## ----warning=FALSE-------------------------------------------------------
+res <-Sigma_estimation(E, method_k = "Cattell", method_0 = "Elbow")
+
+## ---- eval = FALSE-------------------------------------------------------
+#  res <-Sigma_estimation(E)
+
 ## ------------------------------------------------------------------------
-res <- Sigma_estimation(E, kmax = 90, prop.max = 0.6, step = 100)
+res_pabl <- Sigma_estimation(E, method_k = "PA", method_0 = "BL")
 
 ## ----fig3, fig.cap="\\label{fig:fig3}",fig.width=3.5,fig.height=3.5------
 Matrix::image(res$Sigma_est)
 
-## ----fig3bis, fig.cap="\\label{fig:fig3bis}",fig.width=3.5,fig.height=3.5----
-Matrix::image(res$S_inv_12 %*% Sigma %*% res$S_inv_12)
+## ----fig3pabl, fig.cap="\\label{fig:fig3pabl}",fig.width=3.5,fig.height=3.5----
+Matrix::image(res_pabl$Sigma_est)
+
+## ------------------------------------------------------------------------
+res_both <- Sigma_estimation(E, method_k = "Cattell", method_0 = "Elbow", inv_12 = TRUE)
 
 ## ------------------------------------------------------------------------
 samp <- sample(1:q, q, replace = FALSE)
@@ -43,7 +55,7 @@ Matrix::image(Sigma_samp)
 
 ## ------------------------------------------------------------------------
 E <- matrix(rnorm(n * q), ncol = q) %*% chol(as.matrix(Sigma_samp))
-res_samp <- Sigma_estimation(E, prop.max = 0.6, step = 100, reorder = TRUE)
+res_samp <- Sigma_estimation(E, reorder = TRUE, inv_12 = TRUE)
 
 ## ----fig5, fig.cap="\\label{fig:fig5}",fig.width=3.5,fig.height=3.5------
 Matrix::image(res_samp$Sigma_est)

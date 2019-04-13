@@ -23,6 +23,3 @@ This function generates a block structured symmetric positive definite matrix to
 Sigma <- Simu_Sigma(q = 100, diag = FALSE, equal = TRUE)
 Matrix::image(Sigma)
 }
-\references{
-M. Perrot-Dockès and C. Lévy-Leduc. "Estimation of large block covariance matrices: Application to the analysis of gene expression data", arXiv:1806.10093.
-}
